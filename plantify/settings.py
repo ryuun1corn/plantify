@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-bn1@#m%m$v0#v^sr$lalv8ef=41(l%zgjty2$9=0zt&*2y0*uc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "yudayana-arif-plantify.pbp.cs.ui.ac.id"]
 
 
 # Application definition
