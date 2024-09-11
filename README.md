@@ -16,6 +16,8 @@
     8. README.md ini saya buat dengan penjelasan saya sendiri dan bantuan menulis dari cheatsheet markdown.
 
 ### Bagan yang berisi request client ke aplikasi web Django serta penjelasan
+![bagan](https://github.com/user-attachments/assets/ba5a124a-ede3-428d-9bf0-95c4d9bca242)
+
 
 ### Apa itu git?
 Git adalah sebuah software yang berjalan di suatu mesin lokal dan berfungsi menyimpan perubahan-perubahan terhadap suatu proyek pemrograman (tidak selalu).
