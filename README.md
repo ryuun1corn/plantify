@@ -1,7 +1,6 @@
 # Plantify ☘
 
 ## URL PWS: http://yudayana-arif-plantify.pbp.cs.ui.ac.id/ 
-(main page terdapat pada /home/)
 
 ## Penjelasan
 
