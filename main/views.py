@@ -1,3 +1,5 @@
+from django.core import serializers
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 from main.forms import TropicalPlantEntryForm
@@ -27,6 +29,34 @@ def add_tropical_plant(request):
 
     context = {"form": form}
     return render(request, "add_tropical_plant.html", context)
+
+
+def get_tropical_plants_xml(request):
+    plants = TropicalPlant.objects.all()
+    return HttpResponse(
+        serializers.serialize("xml", plants), content_type="application/xml"
+    )
+
+
+def get_tropical_plants_json(request):
+    plants = TropicalPlant.objects.all()
+    return HttpResponse(
+        serializers.serialize("json", plants), content_type="application/json"
+    )
+
+
+def get_tropical_plant_xml(request, id):
+    plant = TropicalPlant.objects.filter(pk=id)
+    return HttpResponse(
+        serializers.serialize("xml", plant), content_type="application/xml"
+    )
+
+
+def get_tropical_plant_json(request, id):
+    plant = TropicalPlant.objects.filter(pk=id)
+    return HttpResponse(
+        serializers.serialize("json", plant), content_type="application/json"
+    )
 
 
 def redirect_home(request):
