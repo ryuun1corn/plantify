@@ -12,4 +12,37 @@
 
 <h5>NPM</h5>
 <p>{{ npm }}</p>
+
+{% if not tropical_plants %}
+
+<p>Belum ada data tanaman tropis pada toko Plantify.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Plant name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Weight</th>
+  </tr>
+
+  {% comment %} Berikut cara memperlihatkan data mood di bawah baris ini
+  {% endcomment %}
+
+  {% for plant in tropical_plants %}
+  <tr>
+    <td>{{plant.name}}</td>
+    <td>{{plant.price}}</td>
+    <td>{{plant.description}}</td>
+    <td>{{plant.weight}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:add_tropical_plant' %}">
+  <button>Add A Tropical Plant</button>
+</a>
+
 {% endblock content %}
