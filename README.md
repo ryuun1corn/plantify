@@ -168,6 +168,17 @@ Token ini berbeda dengan cookies yang menyimpan data sesi autentikasi karena tok
   ]
   ```
 
+#### Screenshot Insomnia dari URL
+- XML All
+![xml](https://github.com/user-attachments/assets/9a933278-4d8f-40e3-9edb-65edae18e54d)
+- XML One
+![xml-spec](https://github.com/user-attachments/assets/05fb2c9c-73f8-428b-872f-fbea0afb9b18)
+- JSON All
+![json](https://github.com/user-attachments/assets/46f02245-2422-4c29-b721-0fc76f55e60e)
+- JSON One
+![json-spec](https://github.com/user-attachments/assets/2632d1e0-86e9-4df3-988a-1fb5e9b8a2f6)
+
+
 </details>
 
 ---
