@@ -15,4 +15,3 @@ class TropicalPlant(models.Model):
     @property
     def is_expensive(self):
         return self.price > 100
-
