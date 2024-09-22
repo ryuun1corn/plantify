@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core import serializers
 from django.http import HttpResponse
@@ -93,3 +93,8 @@ def login_user(request):
         form = AuthenticationForm(request)
     context = {"form": form}
     return render(request, "login.html", context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("main:login")
