@@ -6,6 +6,7 @@ from main.views import (
     get_tropical_plant_xml,
     get_tropical_plants_json,
     get_tropical_plants_xml,
+    login_user,
     redirect_home,
     register,
     show_main,
@@ -18,6 +19,7 @@ urlpatterns = [
     path("home/", show_main, name="show_main"),
     path("", redirect_home, name="redirect_home"),
     path("register/", register, name="register"),
+    path("login/", login_user, name="login"),
     path("add-tropical-plant/", add_tropical_plant, name="add_tropical_plant"),
     path(
         "tropical-plant-xml/", get_tropical_plants_xml, name="get_tropical_plants_xml"
