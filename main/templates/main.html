@@ -11,6 +11,7 @@
     <a href="{% url 'main:logout' %}">
         <button>Logout</button>
     </a>
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
     {% if not tropical_plants %}
         <p>Belum ada data tanaman tropis pada toko Plantify.</p>
     {% else %}

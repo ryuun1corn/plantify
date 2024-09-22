@@ -1,10 +1,13 @@
+import datetime
+
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from main.forms import TropicalPlantEntryForm
 from main.models import TropicalPlant
@@ -20,6 +23,7 @@ def show_main(request):
         "class": "PBP-D",
         "npm": "2306215160",
         "tropical_plants": tropical_plant_entries,
+        "last_login": request.COOKIES["last_login"],
     }
 
     return render(request, "main.html", context)
@@ -89,7 +93,9 @@ def login_user(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect("main:show_main")
+            response = HttpResponseRedirect(reverse("main:show_main"))
+            response.set_cookie("last_login", str(datetime.datetime.now()))
+            return response
 
     else:
         form = AuthenticationForm(request)
@@ -99,4 +105,6 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect("main:login")
+    response = HttpResponseRedirect(reverse("main:login"))
+    response.delete_cookie("last_login")
+    return response
