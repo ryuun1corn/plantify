@@ -16,10 +16,10 @@ from main.models import TropicalPlant
 # Create your views here.
 @login_required(login_url="/login")
 def show_main(request):
-    tropical_plant_entries = TropicalPlant.objects.all()
+    tropical_plant_entries = TropicalPlant.objects.filter(user=request.user)
     context = {
         "app_name": "Plantify Shop",
-        "name": "Yudayana Arif Prasojo",
+        "name": request.user.username,
         "class": "PBP-D",
         "npm": "2306215160",
         "tropical_plants": tropical_plant_entries,
@@ -33,7 +33,9 @@ def add_tropical_plant(request):
     form = TropicalPlantEntryForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
-        form.save()
+        tropical_plant_entry = form.save(commit=False)
+        tropical_plant_entry.user = request.user
+        tropical_plant_entry.save()
         return redirect("main:show_main")
 
     context = {"form": form}
