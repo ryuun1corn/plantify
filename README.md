@@ -12,9 +12,152 @@
 
 ---
 
-### Jawaban Tugas :three:
+### Jawaban Tugas :four:
 
 <details open>
+    <summary>Lihat disini</summary>
+
+##### 1. Apa perbedaan antara HttpResponseRedirect() dan redirect()
+
+Perbedaan antara `HttpResponseRedirect()` dan `redirect()` adalah bahwa `HttpResponseRedirect()` merupakan response berbentuk Class dan dapat dimodifikasi sesuai kebutuhan agar aplikasi dapat mengembalikan response dengan fungsi tertentu.
+
+`redirect()` itu sendiri didesain untuk mengembalikan sebuah `HttpResponseRedirect()`, tetapi dengan menggunakan pemanggilan fungsi `redirect()`, navigasi terhadap suatu link dapat dilakukan dengan lebih fleksibel, seperti melalui string URL, nama sebuah view, atau objek model.
+
+##### 2. Jelaskan cara kerja penghubungan model Product dengan User!
+
+Penghubungan model Product (dalam aplikasi Plantify adalah `TropicalPlant`) dengan User dilakukan dengan menambahkan field baru pada model Product tersebut yang merepresentasikan hubungan dengan seorang User.
+
+Dengan menghubungkan sebuah User dengan Product, telah dibuat jenis relasi yaitu many-to-one relationship yang berarti seorang User dapat memiliki banyak Product.
+
+##### 3. Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+
+Authentication dan Authorization adalah dua konsep yang berbeda tetapi sering dianggap sama oleh banyak programmer.
+
+Authentication merupakan proses untuk memperjelas peran suatu pengguna terhadap aplikasi yang sedang digunakan. Dalam kasus ini, aplikasi ingin mengetahui siapa pengguna yang sedang mengaksesnya dan apa perannya di dalam aplikasi ini.
+
+Authorization adalah proses dimana aplikasi menentukan peran apa yang dapat mengakses suatu sumber daya dalam aplikasi tersebut. Sebagai contoh, mungkin seorang dengan peran User tidak memiliki akses terhadap aksi administratif dari suatu aplikasi, sementara pengguna dengan peran Admin dapat mengaksesnya.
+
+##### 4. Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+
+Django mengingat pengguna yang telah login dengan membuat sebuah session storage pada server yang menyimpan seluruh user yang telah login kepada aplikasi tersebut. Django kemudian mengirimkan ID dari session tersebut kepada user yang login tersebut. Perlu diperhatikan bahwa session ID bersifat unik dan berfungsi untuk mengidentifikasi user pada aplikasi Django tersebut.
+
+Session ID yang dikirimkan oleh server kemudian disimpan oleh browser yang menerimanya di dalam penyimpanan bernama cookies. Sang user kemudian dapat mencantumkan session ID ini di request-request yang dikirimkan kepada aplikasi sebagai bentuk authentication dan authorization terhadap peran user dalam aplikasi tersebut.
+
+Selain untuk menyimpan session ID, cookies biasanya digunakan untuk menyimpan preferensi dari pengguna aplikasi agar saat user kembali ke web tersebut setelah waktu yang lama, aplikasi masih dapat mengingat preferensi user tersebut sejak terakhir kali menggunakannya.
+
+##### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- [x] Mengimplementasikan fungsi registrasi, login, dan logout untuk memungkinkan pengguna untuk mengakses aplikasi sebelumnya dengan lancar.
+
+  1. Pengimplementasian fungsi registrasi, login, dan logout dimulai dengan menambahkan ketiga fungsionalitas tersebut di file `views.py`:
+
+  ```python
+  def register(request):
+      form = UserCreationForm()
+
+      if request.method == "POST":
+          form = UserCreationForm(request.POST)
+          if form.is_valid():
+              form.save()
+              messages.success(request, "Your account has successfully been created!")
+              return redirect("main:login")
+
+      context = {"form": form}
+      return render(request, "register.html", context)
+
+
+  def login_user(request):
+      if request.method == "POST":
+          form = AuthenticationForm(data=request.POST)
+
+          if form.is_valid():
+              user = form.get_user()
+              login(request, user)
+              response = HttpResponseRedirect(reverse("main:show_main"))
+              response.set_cookie("last_login", str(datetime.datetime.now()))
+              return response
+
+      else:
+          form = AuthenticationForm(request)
+      context = {"form": form}
+      return render(request, "login.html", context)
+
+
+  def logout_user(request):
+      logout(request)
+      response = HttpResponseRedirect(reverse("main:login"))
+      response.delete_cookie("last_login")
+  ```
+
+  2. Membuat 2 template HTML baru yaitu `register.html` dan `login.html` yang berfungsi sebagai form register dan login untuk aplikasi
+
+  3. Menambahkan fungsionalitas dari `views.py` ke file `urls.py` untuk meng-ekspose fungsi-fungsi tersebut.
+
+  ```python
+  urlpatterns = [
+      ...
+      path("register/", register, name="register"),
+      path("login/", login_user, name="login"),
+      path("logout/", logout_user, name="logout"),
+  ]
+  ```
+
+  4. Terakhir, menambahkan tag baru di file `main.html` yang berfungsi sebagai tombol logout dari halaman utama:
+
+  ```html
+  <a href="{% url 'main:logout' %}">
+    <button>Logout</button>
+  </a>
+  ```
+
+- [x] Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
+  Pembuatan akun dilakukan dengan me-register ke aplikasi dengan 2 identitas berbeda, kemudian menambahkan tiga dummy data untuk setiap akun tersebut.
+- [x] Menghubungkan model Product dengan User.
+
+  Menghubungkan model Product (dalam aplikasi Plantify adalah model TropicalPlant) dilakukan dengan menambahkan field baru di model tersebut:
+
+  ```python
+  class TropicalPlant(models.Model):
+      id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+      user = models.ForeignKey(User, on_delete=models.CASCADE)
+      name = models.CharField(max_length=255)
+      price = models.IntegerField()
+      description = models.TextField()
+      weight = models.FloatField()
+      created_at = models.DateTimeField(auto_now_add=True)
+  ```
+
+  Model di atas ditambahkan field baru yaitu `user` yang mereferensikan terhadap seorang User dengan bantuan `ForeignKey()`. Dengan ini, telah terbuat relasi one-to-many yaitu setiap user dapat memiliki relasi dengan banyak instansi dari model ini.
+  `on_delete=models.CASCADE` menyatakan bahwa jika suatu User di-delete, maka seluruh instansi dari TropicalPlant yang memiliki relasi terhadap User tersebut akan dihapus.
+
+- [x] Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last login pada halaman utama aplikasi.
+
+  Informasi tentang pengguna yang sedang login dapat diakses melalui request yang dikirimkan kepada aplikasi. Seperti contoh, dapat dilihat pada fungsi `show_main()` bahwa:
+
+  ```python
+  def show_main(request):
+      tropical_plant_entries = TropicalPlant.objects.filter(user=request.user)
+      context = {
+          "app_name": "Plantify Shop",
+          "name": request.user.username,
+          "class": "PBP-D",
+          "npm": "2306215160",
+          "tropical_plants": tropical_plant_entries,
+          "last_login": request.COOKIES["last_login"],
+      }
+
+      return render(request, "main.html", context)
+  ```
+
+  Data `name` dapat diambil dari objek user yang mengirim request tersebut, sedangkan `last_login` dapat diakses berdasarkan cookies yang telah tersimpan di browser pengguna dan dicantumkan bersama dengan request yang dikirim oleh user.
+
+</details>
+
+---
+
+### Jawaban Tugas :three:
+
+<details>
     <summary>Lihat disini</summary>
 
 ##### 1. Jelaskan mengapa kita memerlukan _data delivery_ dalam pengimplementasian sebuah platform?
@@ -169,15 +312,15 @@ Token ini berbeda dengan cookies yang menyimpan data sesi autentikasi karena tok
   ```
 
 #### Screenshot Insomnia dari URL
-- XML All
-![xml](https://github.com/user-attachments/assets/9a933278-4d8f-40e3-9edb-65edae18e54d)
-- XML One
-![xml-spec](https://github.com/user-attachments/assets/05fb2c9c-73f8-428b-872f-fbea0afb9b18)
-- JSON All
-![json](https://github.com/user-attachments/assets/46f02245-2422-4c29-b721-0fc76f55e60e)
-- JSON One
-![json-spec](https://github.com/user-attachments/assets/2632d1e0-86e9-4df3-988a-1fb5e9b8a2f6)
 
+- XML All
+  ![xml](https://github.com/user-attachments/assets/9a933278-4d8f-40e3-9edb-65edae18e54d)
+- XML One
+  ![xml-spec](https://github.com/user-attachments/assets/05fb2c9c-73f8-428b-872f-fbea0afb9b18)
+- JSON All
+  ![json](https://github.com/user-attachments/assets/46f02245-2422-4c29-b721-0fc76f55e60e)
+- JSON One
+  ![json-spec](https://github.com/user-attachments/assets/2632d1e0-86e9-4df3-988a-1fb5e9b8a2f6)
 
 </details>
 
