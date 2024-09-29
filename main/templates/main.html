@@ -31,6 +31,11 @@
                             <button>Edit</button>
                         </a>
                     </td>
+                    <td>
+                        <a href="{% url 'main:delete_tropical_plant' plant.pk %}">
+                            <button>Delete</button>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

@@ -2,6 +2,7 @@ from django.urls import path
 
 from main.views import (
     add_tropical_plant,
+    delete_tropical_plant,
     edit_tropical_plant,
     get_tropical_plant_json,
     get_tropical_plant_xml,
@@ -27,6 +28,11 @@ urlpatterns = [
     path(
         "edit-tropical-plant/<uuid:id>", edit_tropical_plant, name="edit_tropical_plant"
     ),
+    path(
+        "delete-tropical-plant/<uuid:id>",
+        delete_tropical_plant,
+        name="delete_tropical_plant",
+    ),  # sesuaikan dengan nama fungsi yang dibuat
     path(
         "tropical-plant-xml/", get_tropical_plants_xml, name="get_tropical_plants_xml"
     ),

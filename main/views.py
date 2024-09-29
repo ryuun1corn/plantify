@@ -114,10 +114,10 @@ def logout_user(request):
 
 def edit_tropical_plant(request, id):
     # Get tropical plant berdasarkan ID
-    mood = TropicalPlant.objects.get(pk=id)
+    plant = TropicalPlant.objects.get(pk=id)
 
     # Set Tropical Plant sebagai instance dari form
-    form = TropicalPlantEntryForm(request.POST or None, instance=mood)
+    form = TropicalPlantEntryForm(request.POST or None, instance=plant)
 
     if form.is_valid() and request.method == "POST":
         # Simpan form dan kembali ke halaman awal
@@ -126,3 +126,12 @@ def edit_tropical_plant(request, id):
 
     context = {"form": form}
     return render(request, "edit_tropical_plant.html", context)
+
+
+def delete_tropical_plant(request, id):
+    # Get tropical plant berdasarkan ID
+    plant = TropicalPlant.objects.get(pk=id)
+    # Hapus plant
+    plant.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse("main:show_main"))
