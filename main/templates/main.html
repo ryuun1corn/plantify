@@ -26,6 +26,11 @@
                     <td>{{ plant.price }}</td>
                     <td>{{ plant.description }}</td>
                     <td>{{ plant.weight }}</td>
+                    <td>
+                        <a href="{% url 'main:edit_tropical_plant' plant.pk %}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

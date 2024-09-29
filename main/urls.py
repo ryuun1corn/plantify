@@ -2,6 +2,7 @@ from django.urls import path
 
 from main.views import (
     add_tropical_plant,
+    edit_tropical_plant,
     get_tropical_plant_json,
     get_tropical_plant_xml,
     get_tropical_plants_json,
@@ -23,6 +24,9 @@ urlpatterns = [
     path("login/", login_user, name="login"),
     path("logout/", logout_user, name="logout"),
     path("add-tropical-plant/", add_tropical_plant, name="add_tropical_plant"),
+    path(
+        "edit-tropical-plant/<uuid:id>", edit_tropical_plant, name="edit_tropical_plant"
+    ),
     path(
         "tropical-plant-xml/", get_tropical_plants_xml, name="get_tropical_plants_xml"
     ),

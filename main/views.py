@@ -110,3 +110,19 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse("main:login"))
     response.delete_cookie("last_login")
     return response
+
+
+def edit_tropical_plant(request, id):
+    # Get tropical plant berdasarkan ID
+    mood = TropicalPlant.objects.get(pk=id)
+
+    # Set Tropical Plant sebagai instance dari form
+    form = TropicalPlantEntryForm(request.POST or None, instance=mood)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse("main:show_main"))
+
+    context = {"form": form}
+    return render(request, "edit_tropical_plant.html", context)

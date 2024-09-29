@@ -12,9 +12,18 @@
 
 ---
 
-### Jawaban Tugas :four:
+### Jawaban Tugas :five:
 
 <details open>
+    <summary>Lihat disini</summary>
+    test
+</details>
+
+---
+
+### Jawaban Tugas :four:
+
+<details>
     <summary>Lihat disini</summary>
 
 ##### 1. Apa perbedaan antara HttpResponseRedirect() dan redirect()
@@ -111,7 +120,7 @@ Selain untuk menyimpan session ID, cookies biasanya digunakan untuk menyimpan pr
   ```
 
 - [x] Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
-  Pembuatan akun dilakukan dengan me-register ke aplikasi dengan 2 identitas berbeda, kemudian menambahkan tiga dummy data untuk setiap akun tersebut.
+      Pembuatan akun dilakukan dengan me-register ke aplikasi dengan 2 identitas berbeda, kemudian menambahkan tiga dummy data untuk setiap akun tersebut.
 - [x] Menghubungkan model Product dengan User.
 
   Menghubungkan model Product (dalam aplikasi Plantify adalah model TropicalPlant) dilakukan dengan menambahkan field baru di model tersebut:
