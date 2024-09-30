@@ -18,7 +18,7 @@ from main.models import TropicalPlant
 def show_main(request):
     tropical_plant_entries = TropicalPlant.objects.filter(user=request.user)
     context = {
-        "app_name": "Plantify Shop",
+        "app_name": "Plantify",
         "name": request.user.username,
         "class": "PBP-D",
         "npm": "2306215160",
@@ -96,7 +96,10 @@ def login_user(request):
             user = form.get_user()
             login(request, user)
             response = HttpResponseRedirect(reverse("main:show_main"))
-            response.set_cookie("last_login", str(datetime.datetime.now()))
+            response.set_cookie(
+                "last_login",
+                str(datetime.datetime.now().strftime("%A, %B %d, %Y %I:%M %p")),
+            )
             return response
 
     else:

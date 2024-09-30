@@ -1,48 +1,57 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Home</title>
+{% endblock meta %}
 {% block content %}
     {% include 'navbar.html' %}
-    <h1>Welcome to Plantify Shop!</h1>
-    <h5>{{ app_name }}</h5>
-    <h5>Current User</h5>
-    <p>{{ name }}</p>
-    <a href="{% url 'main:logout' %}">
-        <button>Logout</button>
-    </a>
-    <h5>Last logged in: {{ last_login }}</h5>
-    {% if not tropical_plants %}
-        <p>Belum ada data tanaman tropis pada toko Plantify.</p>
-    {% else %}
-        <table>
-            <tr>
-                <th>Plant name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Weight</th>
-            </tr>
-            {% comment %} Berikut cara memperlihatkan data mood di bawah baris ini
-            {% endcomment %}
-            {% for plant in tropical_plants %}
-                <tr>
-                    <td>{{ plant.name }}</td>
-                    <td>{{ plant.price }}</td>
-                    <td>{{ plant.description }}</td>
-                    <td>{{ plant.weight }}</td>
-                    <td>
-                        <a href="{% url 'main:edit_tropical_plant' plant.pk %}">
-                            <button>Edit</button>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{% url 'main:delete_tropical_plant' plant.pk %}">
-                            <button>Delete</button>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-    <br />
-    <a href="{% url 'main:add_tropical_plant' %}">
-        <button>Add A Tropical Plant</button>
-    </a>
+    <div>
+        <section class="min-h-screen pt-24 px-10">
+            <div class="w-full h-full bg-white/80 p-6 rounded-xl">
+                <h5 class="text-2xl text-green-800">
+                    Hi, <b>{{ name }}</b>
+                </h5>
+                <h5>
+                    Last logged in: <b>{{ last_login }}</b>
+                </h5>
+            </div>
+            <header class="flex flex-col items-center justify-center gap-5 my-20">
+                <h1 class="text-3xl font-bold tracking-tighter text-green-900 sm:text-5xl xl:text-6xl/none text-center w-full">
+                    Welcome to Plantify Shop!
+                </h1>
+                <p class="max-w-[600px] text-green-800 md:text-xl w-full text-center block">
+                    Discover our curated collection of beautiful, easy-to-care-for plants that will transform your space into a green oasis.
+                </p>
+            </header>
+            <div class="my-5 flex flex-col items-center justify-center text-lg gap-3 text-green-800">
+                <p>
+                    🌻 <b>Reminder</b>: Have you watered your plants today?
+                </p>
+                <div class="before:block before:absolute before:-inset-1 before:-skew-y-2 before:bg-green-800 relative flex flex-col items-center justify-center p-3">
+                    <p class="relative text-gray-50 font-medium">Check out our plants if you still don't have one!</p>
+                    <p class="tracking-widest font-bold text-gray-50 relative leading-relaxed">↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</p>
+                </div>
+            </div>
+        </section>
+        <section class="min-h-screen pt-24 bg-gray-50">
+            {% if not tropical_plants %}
+                <p>Belum ada data tanaman tropis pada toko Plantify.</p>
+            {% else %}
+                <h2 class="text-3xl font-bold tracking-tighter text-green-800 sm:text-5xl text-center my-8">Our best sellers!</h2>
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 p-10">
+                    {% for plant in tropical_plants %}
+                        {% include 'card_plant.html' with plant=plant %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <br />
+            <div class="flex flex-col gap-3 w-full items-center justify-center p-5 text-lg">
+                <p>Haven't found a plant you like?</p>
+                <a href="{% url 'main:add_tropical_plant' %}"
+                   class="bg-green-700 text-white hover:bg-green-800 p-3 rounded-md font-medium tracking-wide">
+                    <button>Add a Tropical Plant!</button>
+                </a>
+            </div>
+        </section>
+    </div>
 {% endblock content %}
