@@ -1,8 +1,5 @@
 const config = {
-  content: [
-    "./templates/**/*.html",
-    "./your_app_name/**/*.py", // Replace with your actual app name
-  ],
+  content: ["./templates/**/*.html", "./main/templates/*.html"],
   theme: {
     extend: {},
   },
