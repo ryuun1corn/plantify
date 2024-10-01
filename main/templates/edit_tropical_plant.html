@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-{% load static %}
+{% block meta %}
+    <title>Edit Tropical Plant</title>
+{% endblock meta %}
 {% block content %}
     {% include 'navbar.html' %}
-    <div class="min-h-screen flex items-center justify-center w-screen bg-green-100 py-12 px-4 sm:px-6 lg:px-8 font-['Poppins']">
-        <div class="bg-gray-50 p-10 rounded-xl form-style w-1/2">
-            <div class="text-center text-4xl font-bold text-green-900">
-                <h2>Edit Tropical Plant</h2>
+    <section class="min-h-screen flex items-center justify-center w-screen bg-green-100 px-3 md:px-6 pb-6 pt-24">
+        <div class="bg-gray-50 rounded-xl form-style p-4 min-w-[50%]">
+            <div class="text-center text-2xl sm:text-3xl lg:text-4xl font-bold text-green-900">
+                <h2>Edit a Tropical Plant</h2>
             </div>
             <form method="POST"
                   action=""
@@ -27,5 +29,5 @@
                 </div>
             </form>
         </div>
-    </div>
+    </section>
 {% endblock %}
