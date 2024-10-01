@@ -5,7 +5,7 @@
 {% block content %}
     <div class="min-h-screen flex items-center justify-center w-screen bg-green-100 py-12 px-4 sm:px-6 lg:px-8 font-['Poppins']">
         <div class="bg-gray-50 p-10 rounded-xl form-style">
-            <div class="text-center text-4xl font-bold text-green-900">
+            <div class="text-center text-2xl md:text-4xl font-bold text-green-900">
                 <h2>Create your account.</h2>
             </div>
             <form method="POST"
@@ -16,7 +16,7 @@
                 <div class="w-full flex flex-col gap-2">
                     {% for field in form %}
                         <div class="flex flex-col">
-                            <label for="username" class="font-medium">{{ field.label }}</label>
+                            <label for="username" class="font-medium text-sm md:text-base">{{ field.label }}</label>
                             {{ field }}
                         </div>
                     {% endfor %}
@@ -32,9 +32,10 @@
                     {% for message in messages %}<li>{{ message }}</li>{% endfor %}
                 </ul>
             {% endif %}
-            <p class="w-full text-center">
+            <p class="w-full text-center text-sm md:text-base">
                 Already have an account?
-                <a href="{% url 'main:login' %}" class="text-green-700 hover:underline">Login here</a>
+                <a href="{% url 'main:login' %}"
+                   class="text-green-700 hover:underline whitespace-nowrap">Login here</a>
             </p>
         </div>
     </div>

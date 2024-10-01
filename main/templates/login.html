@@ -5,7 +5,7 @@
 {% block content %}
     <div class="min-h-screen flex items-center justify-center w-screen bg-green-100 py-12 px-4 sm:px-6 lg:px-8 font-['Poppins']">
         <div class="bg-gray-50 p-10 rounded-xl">
-            <div class="text-center text-4xl font-bold text-green-900">
+            <div class="text-center text-2xl md:text-4xl font-bold text-green-900">
                 <h2>Login to your account.</h2>
             </div>
             <form method="POST"
@@ -43,10 +43,10 @@
                     {% for message in messages %}<li>{{ message }}</li>{% endfor %}
                 </ul>
             {% endif %}
-            <p class="w-full text-center">
+            <p class="w-full text-center text-sm md:text-base">
                 Don't have an account yet?
                 <a href="{% url 'main:register' %}"
-                   class="text-green-700 hover:underline">Register now</a>
+                   class="text-green-700 hover:underline whitespace-nowrap">Register now</a>
             </p>
         </div>
     </div>
