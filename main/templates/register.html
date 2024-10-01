@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block meta %}
     <title>Register</title>
 {% endblock meta %}
 {% block content %}
-    <div class="min-h-screen flex items-center justify-center w-screen bg-green-100 py-12 px-4 sm:px-6 lg:px-8 font-['Poppins']">
+    <section class="min-h-screen flex items-center justify-center w-screen py-12 px-4 sm:px-6 lg:px-8">
         <div class="bg-gray-50 p-10 rounded-xl form-style">
             <div class="text-center text-2xl md:text-4xl font-bold text-green-900">
                 <h2>Create your account.</h2>
@@ -38,5 +39,5 @@
                    class="text-green-700 hover:underline whitespace-nowrap">Login here</a>
             </p>
         </div>
-    </div>
+    </section>
 {% endblock content %}
