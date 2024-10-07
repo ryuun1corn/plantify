@@ -49,7 +49,7 @@
                      class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
                     <!-- Modal header -->
                     <div class="flex items-center justify-between p-4 border-b rounded-t">
-                        <h3 class="text-xl font-semibold text-gray-900">Add New Tropical Plant Entry</h3>
+                        <h3 class="text-xl font-semibold text-gray-900">Add New Tropical Plant</h3>
                         <button type="button"
                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                                 id="closeModalBtn">
@@ -66,43 +66,46 @@
                     </div>
                     <!-- Modal body -->
                     <div class="px-6 py-4 space-y-6 form-style">
-                        <form id="addTropicalPlantForm">
+                        <form id="addTropicalPlantForm" class="max-h-[60vh] overflow-auto">
                             <div class="mb-4">
-                                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                                <label for="name" class="block text-xs md:text-sm font-medium text-gray-700">Name</label>
                                 <input type="text"
                                        id="name"
                                        name="name"
-                                       class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700"
+                                       class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
                                        placeholder="What is the name of your plant?"
                                        required>
                             </div>
                             <div class="mb-4">
-                                <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                                <label for="price"
+                                       class="block text-xs md:text-sm font-medium text-gray-700">Price</label>
                                 <input type="number"
                                        id="price"
                                        name="price"
                                        min="0"
-                                       class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700"
+                                       class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
                                        placeholder="How much does your plant cost?"
                                        step="1"
                                        required>
                             </div>
                             <div class="mb-4">
-                                <label for="weight" class="block text-sm font-medium text-gray-700">Weight</label>
+                                <label for="weight"
+                                       class="block text-xs md:text-sm font-medium text-gray-700">Weight</label>
                                 <input type="number"
                                        id="weight"
                                        name="weight"
-                                       class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700"
+                                       class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
                                        placeholder="How heavy is your plant?"
                                        step="0.01"
                                        required>
                             </div>
                             <div class="mb-4">
-                                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                                <label for="description"
+                                       class="block text-xs md:text-sm font-medium text-gray-700">Description</label>
                                 <textarea id="description"
                                           name="description"
-                                          rows="3"
-                                          class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-indigo-700"
+                                          rows="2"
+                                          class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
                                           placeholder="Describe your plant"
                                           required></textarea>
                             </div>
@@ -116,7 +119,7 @@
                         <button type="submit"
                                 id="submitTropicalPlant"
                                 form="addTropicalPlantForm"
-                                class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg">
+                                class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">
                             Save
                         </button>
                     </div>
