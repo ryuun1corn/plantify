@@ -8,6 +8,7 @@ from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -145,10 +146,10 @@ def delete_tropical_plant(request, id):
 @csrf_exempt
 @require_POST
 def add_tropical_plant_ajax(request):
-    name = request.POST.get("name")
+    name = strip_tags(request.POST.get("name"))
     price = request.POST.get("price")
-    description = request.POST.get("description")
     weight = request.POST.get("weight")
+    description = strip_tags(request.POST.get("description"))
     user = request.user
 
     new_tropical_plant = TropicalPlant(
