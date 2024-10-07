@@ -149,9 +149,10 @@ def add_tropical_plant_ajax(request):
     price = request.POST.get("price")
     description = request.POST.get("description")
     weight = request.POST.get("weight")
+    user = request.user
 
     new_tropical_plant = TropicalPlant(
-        name=name, price=price, description=description, weight=weight
+        user=user, name=name, price=price, description=description, weight=weight
     )
     new_tropical_plant.save()
 
