@@ -18,13 +18,11 @@ from main.models import TropicalPlant
 # Create your views here.
 @login_required(login_url="/login")
 def show_main(request):
-    tropical_plant_entries = TropicalPlant.objects.filter(user=request.user)
     context = {
         "app_name": "Plantify",
         "name": request.user.username,
         "class": "PBP-D",
         "npm": "2306215160",
-        "tropical_plants": tropical_plant_entries,
         "last_login": request.COOKIES["last_login"],
     }
 
@@ -45,14 +43,14 @@ def add_tropical_plant(request):
 
 
 def get_tropical_plants_xml(request):
-    plants = TropicalPlant.objects.all()
+    plants = TropicalPlant.objects.filter(user=request.user)
     return HttpResponse(
         serializers.serialize("xml", plants), content_type="application/xml"
     )
 
 
 def get_tropical_plants_json(request):
-    plants = TropicalPlant.objects.all()
+    plants = TropicalPlant.objects.filter(user=request.user)
     return HttpResponse(
         serializers.serialize("json", plants), content_type="application/json"
     )
