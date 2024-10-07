@@ -19,6 +19,8 @@ async function refreshTropicalPlants() {
           <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4 p-3 md:p-10">
     `;
     tropicalPlants.forEach((item) => {
+      const name = DOMPurify.sanitize(item.fields.name);
+      const description = DOMPurify.sanitize(item.fields.description);
       htmlString += `
             <div class="relative group">
                 <div class="flex flex-col items-center justify-between group rounded-md shadow-lg transition-transform group-hover:scale-105 overflow-hidden">
@@ -27,10 +29,10 @@ async function refreshTropicalPlants() {
                          class="w-auto h-60 p-2" />
                     <div class="bg-white p-4 flex flex-col gap-2 w-full">
                         <div class="flex flex-col">
-                            <h3 class="font-semibold text-lg text-green-800 tracking-wide">${item.fields.name}</h3>
+                            <h3 class="font-semibold text-lg text-green-800 tracking-wide">${name}</h3>
                             <p class="text-green-600">${item.fields.price}, ${item.fields.weight} lbs</p>
                         </div>
-                        <p class="text-green-600">${item.fields.description}</p>
+                        <p class="text-green-600">${description}</p>
                     </div>
                 </div>
                 <div class="absolute -top-2 right-2 md:-right-4 flex space-x-1 group-hover:scale-105 transition-transform">
