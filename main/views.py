@@ -8,6 +8,8 @@ from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from main.forms import TropicalPlantEntryForm
 from main.models import TropicalPlant
@@ -140,3 +142,19 @@ def delete_tropical_plant(request, id):
     plant.delete()
     # Kembali ke halaman awal
     return HttpResponseRedirect(reverse("main:show_main"))
+
+
+@csrf_exempt
+@require_POST
+def add_tropical_plant_ajax(request):
+    name = request.POST.get("name")
+    price = request.POST.get("price")
+    description = request.POST.get("description")
+    weight = request.POST.get("weight")
+
+    new_tropical_plant = TropicalPlant(
+        name=name, price=price, description=description, weight=weight
+    )
+    new_tropical_plant.save()
+
+    return HttpResponse(b"Created", status=201)

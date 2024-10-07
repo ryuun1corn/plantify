@@ -2,6 +2,7 @@ from django.urls import path
 
 from main.views import (
     add_tropical_plant,
+    add_tropical_plant_ajax,
     delete_tropical_plant,
     edit_tropical_plant,
     get_tropical_plant_json,
@@ -50,5 +51,10 @@ urlpatterns = [
         "tropical-plant-json/<str:id>/",
         get_tropical_plant_json,
         name="get_tropical_plant_json",
+    ),
+    path(
+        "add-tropical-plant-ajax/",
+        add_tropical_plant_ajax,
+        name="add_tropical_plant_ajax",
     ),
 ]
