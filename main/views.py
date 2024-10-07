@@ -101,6 +101,8 @@ def login_user(request):
                 str(datetime.datetime.now().strftime("%A, %B %d, %Y %I:%M %p")),
             )
             return response
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
 
     else:
         form = AuthenticationForm(request)
