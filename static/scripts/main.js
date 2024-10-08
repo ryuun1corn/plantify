@@ -104,6 +104,8 @@ function addTropicalPlant() {
   document.getElementById("addTropicalPlantForm").reset();
   document.querySelector("[data-modal-toggle='crudModal']").click();
 
+  hideModal();
+
   return false;
 }
 

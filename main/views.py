@@ -151,6 +151,8 @@ def add_tropical_plant_ajax(request):
     weight = request.POST.get("weight")
     description = strip_tags(request.POST.get("description"))
     user = request.user
+    if not name or not price or not weight or not description:
+        return HttpResponse(b"Missing required fields", status=400)
 
     new_tropical_plant = TropicalPlant(
         user=user, name=name, price=price, description=description, weight=weight
