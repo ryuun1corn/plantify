@@ -43,12 +43,357 @@ Pembersihan data input pengguna dilakukan di belakang (backend) karena data yang
 ##### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
 - [x] Ubahlah kode cards data mood agar dapat mendukung AJAX GET.
+
+1. Menghapus cards yang sebelumnya menggunakan template Django dan menggantinya dengan sebuah div kosong yang akan menjadi container cards.
+
+```html
+<div id="tropical_plants_cards"></div>
+```
+
+elemen div tersebut akan diisi dengan data plant yang diambil dari server menggunakan AJAX GET.
+
 - [x] Lakukan pengambilan data mood menggunakan AJAX GET. Pastikan bahwa data yang diambil hanyalah data milik pengguna yang logged-in.
+
+1. Menghapus penyaluran data plant melalui konteks Django dan mengubah fungsi `get_tropical_plants_json` dan `get_tropical_plants_xml` untuk mengambil data plant sesuai dengan user yang sedang login.
+
+```python
+def get_tropical_plants_xml(request):
+    plants = TropicalPlant.objects.filter(user=request.user)
+    return HttpResponse(
+        serializers.serialize("xml", plants), content_type="application/xml"
+    )
+
+
+def get_tropical_plants_json(request):
+    plants = TropicalPlant.objects.filter(user=request.user)
+    return HttpResponse(
+        serializers.serialize("json", plants), content_type="application/json"
+    )
+```
+
+3. Menggunakan `fetch()` untuk melakukan request AJAX GET ke server dan mengambil data plant yang dimiliki oleh user yang sedang login.
+
+```javascript
+async function getTropicalPlants() {
+  return fetch("/tropical-plant-json").then((response) => response.json());
+}
+```
+
+3. Melakukan refresh untuk memperbarui data plant yang ditampilkan di halaman web.
+
+```javascript
+async function refreshTropicalPlants() {
+  document.getElementById("tropical_plants_cards").innerHTML = "";
+  document.getElementById("tropical_plants_cards").className = "";
+  const tropicalPlants = await getTropicalPlants();
+  let htmlString = "";
+  let classNameString = "";
+
+  if (tropicalPlants.length === 0) {
+    classNameString =
+      "flex flex-col items-center justify-center min-h-[24rem] p-6";
+    htmlString = `<p class="text-center">There are no plants in the shop just yet. 🌱</p>`;
+  } else {
+    htmlString += `
+          <h2 class="text-3xl font-bold tracking-tighter text-green-800 sm:text-5xl text-center my-8">Our best sellers!</h2>
+          <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4 p-3 md:p-10">
+    `;
+    tropicalPlants.forEach((item) => {
+      const name = DOMPurify.sanitize(item.fields.name);
+      const description = DOMPurify.sanitize(item.fields.description);
+      htmlString += `
+            <div class="relative group">
+                <div class="flex flex-col items-center justify-between group rounded-md shadow-lg transition-transform group-hover:scale-105 overflow-hidden">
+                    <img src="/static/image/plant_placeholder.png"
+                         alt="Plant placeholder"
+                         class="w-auto h-60 p-2" />
+                    <div class="bg-white p-4 flex flex-col gap-2 w-full">
+                        <div class="flex flex-col">
+                            <h3 class="font-semibold text-lg text-green-800 tracking-wide">${name}</h3>
+                            <p class="text-green-600">${item.fields.price}, ${item.fields.weight} lbs</p>
+                        </div>
+                        <p class="text-green-600">${description}</p>
+                    </div>
+                </div>
+                <div class="absolute -top-2 right-2 md:-right-4 flex space-x-1 group-hover:scale-105 transition-transform">
+                    <a href="/edit-tropical-plant/${item.pk}"
+                       class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6 sm:h-8 sm:w-8"
+                             viewBox="0 0 20 20"
+                             fill="currentColor">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                    </a>
+                    <a href="/delete-tropical-plant/${item.pk}"
+                       class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6 sm:h-8 sm:w-8"
+                             viewBox="0 0 20 20"
+                             fill="currentColor">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            `;
+    });
+    htmlString += "</div>";
+  }
+  document.getElementById("tropical_plants_cards").className = classNameString;
+  document.getElementById("tropical_plants_cards").innerHTML = htmlString;
+}
+
+refreshTropicalPlants();
+```
+
 - [x] Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan mood.
+
+1. Membuat modal dengan form untuk menambahkan plant baru.
+
+```html
+<div
+  id="crudModal"
+  tabindex="-1"
+  aria-hidden="true"
+  class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out"
+>
+  <div
+    id="crudModalContent"
+    class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out"
+  >
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-4 border-b rounded-t">
+      <h3 class="text-xl font-semibold text-gray-900">
+        Add New Tropical Plant
+      </h3>
+      <button
+        type="button"
+        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+        id="closeModalBtn"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+    </div>
+    <!-- Modal body -->
+    <div class="px-6 py-4 space-y-6 form-style">
+      <form id="addTropicalPlantForm" class="max-h-[60vh] overflow-auto">
+        <div class="mb-4">
+          <label
+            for="name"
+            class="block text-xs md:text-sm font-medium text-gray-700"
+            >Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
+            placeholder="What is the name of your plant?"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="price"
+            class="block text-xs md:text-sm font-medium text-gray-700"
+            >Price</label
+          >
+          <input
+            type="number"
+            id="price"
+            name="price"
+            min="0"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
+            placeholder="How much does your plant cost?"
+            step="1"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="weight"
+            class="block text-xs md:text-sm font-medium text-gray-700"
+            >Weight</label
+          >
+          <input
+            type="number"
+            id="weight"
+            name="weight"
+            class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
+            placeholder="How heavy is your plant?"
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="description"
+            class="block text-xs md:text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            name="description"
+            rows="2"
+            class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-green-700 text-xs md:text-sm"
+            placeholder="Describe your plant"
+            required
+          ></textarea>
+        </div>
+      </form>
+    </div>
+    <!-- Modal footer -->
+    <div
+      class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end"
+    >
+      <button
+        type="button"
+        class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg"
+        id="cancelButton"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        id="submitTropicalPlant"
+        form="addTropicalPlantForm"
+        class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+2. Menambahkan fungsi untuk menampilkan dan menyembunyikan modal, serta menambahkan event listener untuk tombol-tombol yang ada di dalam modal.
+
+```javascript
+const modal = document.getElementById("crudModal");
+const modalContent = document.getElementById("crudModalContent");
+
+function showModal() {
+  const modal = document.getElementById("crudModal");
+  const modalContent = document.getElementById("crudModalContent");
+
+  modal.classList.remove("hidden");
+  setTimeout(() => {
+    modalContent.classList.remove("opacity-0", "scale-95");
+    modalContent.classList.add("opacity-100", "scale-100");
+  }, 50);
+}
+
+function hideModal() {
+  const modal = document.getElementById("crudModal");
+  const modalContent = document.getElementById("crudModalContent");
+
+  modalContent.classList.remove("opacity-100", "scale-100");
+  modalContent.classList.add("opacity-0", "scale-95");
+
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 150);
+}
+
+document.getElementById("cancelButton").addEventListener("click", hideModal);
+document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+```
+
+3. Menambahkan tombol untuk membuka modal di halaman web.
+
+```html
+<button
+  data-modal-target="crudmodal"
+  data-modal-toggle="crudmodal"
+  class="bg-green-700 text-white hover:bg-green-800 p-3 rounded-md font-medium"
+  onclick="showmodal()"
+>
+  add a tropical plant by ajax!
+</button>
+```
+
 - [x] Buatlah fungsi view baru untuk menambahkan mood baru ke dalam basis data.
+
+1. Menambahkan fungsi view baru untuk menambahkan plant baru ke dalam basis data.
+
+```python
+@csrf_exempt
+@require_POST
+def add_tropical_plant_ajax(request):
+    name = strip_tags(request.POST.get("name"))
+    price = request.POST.get("price")
+    weight = request.POST.get("weight")
+    description = strip_tags(request.POST.get("description"))
+    user = request.user
+    if not name or not price or not weight or not description:
+        return HttpResponse(b"Missing required fields", status=400)
+
+    new_tropical_plant = TropicalPlant(
+        user=user, name=name, price=price, description=description, weight=weight
+    )
+    new_tropical_plant.save()
+
+    return HttpResponse(b"Created", status=201)
+```
+
 - [x] Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat.
+
+1. Menambahkan path baru di file `urls.py` yang mengarah ke fungsi view `add_tropical_plant_ajax`.
+
+```python
+path(
+        "create-ajax/",
+        add_tropical_plant_ajax,
+        name="create_ajax",
+    )
+```
+
 - [x] Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/.
+
+1. Membuat sebuah fungsi untuk mengambil data dari form dan mengirimkannya ke server menggunakan AJAX POST.
+
+```javascript
+function addTropicalPlant() {
+  fetch("/create-ajax/", {
+    method: "POST",
+    body: new FormData(document.querySelector("#addTropicalPlantForm")),
+  }).then((response) => refreshTropicalPlants());
+
+  document.getElementById("addTropicalPlantForm").reset();
+  document.querySelector("[data-modal-toggle='crudModal']").click();
+
+  return false;
+}
+```
+
+2. Menambahkan event listener untuk form yang akan mengirimkan data plant baru ke server menggunakan AJAX POST.
+
+```javascript
+document
+  .getElementById("addTropicalPlantForm")
+  .addEventListener("submit", (e) => {
+    e.preventDefault();
+    addTropicalPlant();
+  });
+```
+
 - [x] Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar mood terbaru tanpa reload halaman utama secara keseluruhan.
+
+1. Memanggil kembali fungsi `refreshTropicalPlants()` setelah menambahkan plant baru ke dalam basis data.
 
 </details>
 
