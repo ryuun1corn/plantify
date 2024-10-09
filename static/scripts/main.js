@@ -96,15 +96,13 @@ document.getElementById("cancelButton").addEventListener("click", hideModal);
 document.getElementById("closeModalBtn").addEventListener("click", hideModal);
 
 function addTropicalPlant() {
-  fetch("/add-tropical-plant-ajax/", {
+  fetch("/create-ajax/", {
     method: "POST",
     body: new FormData(document.querySelector("#addTropicalPlantForm")),
   }).then((response) => refreshTropicalPlants());
 
   document.getElementById("addTropicalPlantForm").reset();
   document.querySelector("[data-modal-toggle='crudModal']").click();
-
-  hideModal();
 
   return false;
 }

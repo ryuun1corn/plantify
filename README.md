@@ -12,9 +12,51 @@
 
 ---
 
-### Jawaban Tugas :five:
+### Jawaban Tugas :six:
 
 <details open>
+    <summary>Lihat disini</summary>
+
+##### 1. Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+
+JavaScript merupakan bahasa pemrograman yang digunakan untuk membuat aplikasi web menjadi lebih interaktif dan dinamis. Berikut adalah beberapa manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web:
+
+- **Interaktivitas**: JavaScript memungkinkan pengguna untuk berinteraksi dengan elemen-elemen di halaman web, seperti membuat animasi, menampilkan pesan, dan mengubah konten halaman secara dinamis.
+- **Validasi Form**: JavaScript dapat digunakan untuk memvalidasi input pengguna pada form sebelum data dikirim ke server, sehingga meminimalkan kesalahan input.
+- **Manipulasi DOM**: JavaScript memungkinkan pengembang untuk mengubah struktur dan tampilan halaman web secara dinamis, seperti menambahkan, menghapus, atau mengubah elemen HTML.
+- **AJAX**: JavaScript memungkinkan pengembang untuk mengirim dan menerima data dari server tanpa harus me-refresh halaman, sehingga meningkatkan performa dan responsivitas aplikasi web.
+- **Event Handling**: JavaScript memungkinkan pengembang untuk menangani event yang terjadi di halaman web, seperti klik, hover, dan submit, sehingga memungkinkan pengembang untuk merespons interaksi pengguna.
+
+##### 2. Jelaskan fungsi dari penggunaan `await` ketika kita menggunakan `fetch()`! Apa yang akan terjadi jika kita tidak menggunakan `await`?
+
+`await` digunakan untuk menunggu hingga proses asynchronous selesai sebelum melanjutkan eksekusi kode selanjutnya. Ketika kita menggunakan `fetch()` untuk melakukan request HTTP, `await` digunakan untuk menunggu hingga response dari server diterima sebelum melanjutkan eksekusi kode selanjutnya.
+Jika kita tidak menggunakan `await`, maka eksekusi kode selanjutnya akan dilanjutkan tanpa menunggu response dari server, sehingga response dari server tidak akan tersedia ketika kode selanjutnya dieksekusi.
+
+##### 3. Mengapa kita perlu menggunakan decorator `csrf_exempt` pada view yang akan digunakan untuk AJAX `POST`?
+
+`csrf_exempt` digunakan untuk menonaktifkan proteksi CSRF (Cross-Site Request Forgery) pada view yang akan digunakan untuk AJAX `POST`. Hal ini diperlukan karena proteksi CSRF memerlukan penggunaan token CSRF yang harus disertakan dalam setiap request POST yang dikirimkan ke server. Namun, pada kasus AJAX `POST`, penggunaan token CSRF ini tidak selalu memungkinkan karena token CSRF tidak dapat diakses oleh JavaScript pada halaman web.
+
+##### 4. Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+
+Pembersihan data input pengguna dilakukan di belakang (backend) karena data yang dikirimkan oleh pengguna dapat dimanipulasi oleh pengguna itu sendiri melalui browser. Oleh karena itu, pembersihan data di frontend saja tidak cukup karena data yang dikirimkan ke server harus tetap bersih dan aman dari serangan XSS (Cross-Site Scripting) atau serangan lainnya.
+
+##### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- [x] Ubahlah kode cards data mood agar dapat mendukung AJAX GET.
+- [x] Lakukan pengambilan data mood menggunakan AJAX GET. Pastikan bahwa data yang diambil hanyalah data milik pengguna yang logged-in.
+- [x] Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan mood.
+- [x] Buatlah fungsi view baru untuk menambahkan mood baru ke dalam basis data.
+- [x] Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat.
+- [x] Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/.
+- [x] Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar mood terbaru tanpa reload halaman utama secara keseluruhan.
+
+</details>
+
+---
+
+### Jawaban Tugas :five:
+
+<details>
     <summary>Lihat disini</summary>
 
 ##### 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
@@ -401,32 +443,26 @@ Selain untuk menyimpan session ID, cookies biasanya digunakan untuk menyimpan pr
       response.delete_cookie("last_login")
   ```
 
-````
+  2. Membuat 2 template HTML baru yaitu `register.html` dan `login.html` yang berfungsi sebagai form register dan login untuk aplikasi
 
-```
+  3. Menambahkan fungsionalitas dari `views.py` ke file `urls.py` untuk meng-ekspose fungsi-fungsi tersebut.
 
-```
+  ```python
+  urlpatterns = [
+      ...
+      path("register/", register, name="register"),
+      path("login/", login_user, name="login"),
+      path("logout/", logout_user, name="logout"),
+  ]
+  ```
 
-2. Membuat 2 template HTML baru yaitu `register.html` dan `login.html` yang berfungsi sebagai form register dan login untuk aplikasi
+  4. Terakhir, menambahkan tag baru di file `main.html` yang berfungsi sebagai tombol logout dari halaman utama:
 
-3. Menambahkan fungsionalitas dari `views.py` ke file `urls.py` untuk meng-ekspose fungsi-fungsi tersebut.
-
-```python
-urlpatterns = [
-    ...
-    path("register/", register, name="register"),
-    path("login/", login_user, name="login"),
-    path("logout/", logout_user, name="logout"),
-]
-```
-
-4. Terakhir, menambahkan tag baru di file `main.html` yang berfungsi sebagai tombol logout dari halaman utama:
-
-```html
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a>
-```
+  ```html
+  <a href="{% url 'main:logout' %}">
+    <button>Logout</button>
+  </a>
+  ```
 
 - [x] Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
       Pembuatan akun dilakukan dengan me-register ke aplikasi dengan 2 identitas berbeda, kemudian menambahkan tiga dummy data untuk setiap akun tersebut.
@@ -679,4 +715,3 @@ Selain itu, Django sudah memiliki database lengkap dengan ORM yang memungkinkan 
 Model Django disebut ORM (Object-Relational Mapping) karena interaksi aplikasi dengan database tidak menggunakan SQL secara langsung, tetapi menggunakan pemodelan OOP sehingga bersifat lebih intuitif dan lebih aman untuk aplikasi perangkat lunak.
 
 </details>
-````

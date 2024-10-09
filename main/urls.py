@@ -53,8 +53,8 @@ urlpatterns = [
         name="get_tropical_plant_json",
     ),
     path(
-        "add-tropical-plant-ajax/",
+        "create-ajax/",
         add_tropical_plant_ajax,
-        name="add_tropical_plant_ajax",
+        name="create_ajax",
     ),
 ]
