@@ -367,14 +367,25 @@ path(
 1. Membuat sebuah fungsi untuk mengambil data dari form dan mengirimkannya ke server menggunakan AJAX POST.
 
 ```javascript
-function addTropicalPlant() {
-  fetch("/create-ajax/", {
+async function addTropicalPlant() {
+  const response = await fetch("/create-ajax/", {
     method: "POST",
     body: new FormData(document.querySelector("#addTropicalPlantForm")),
-  }).then((response) => refreshTropicalPlants());
+  });
 
-  document.getElementById("addTropicalPlantForm").reset();
-  document.querySelector("[data-modal-toggle='crudModal']").click();
+  if (response.ok) {
+    document.getElementById("addTropicalPlantForm").reset();
+    document.getElementById("formErrorMessage").classList.add("hidden");
+    hideModal();
+    refreshTropicalPlants();
+  } else {
+    document.getElementById("formErrorMessage").classList.remove("hidden");
+    document.getElementById("formErrorMessage").scrollIntoView({
+      behavior: "smooth", // Optional, adds a smooth scroll effect
+      block: "center", // Optional, aligns the element to the center of the view
+      inline: "nearest", // Optional, aligns the element within the nearest scrolling container
+    });
+  }
 
   return false;
 }
